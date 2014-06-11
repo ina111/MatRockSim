@@ -38,8 +38,9 @@ deltaY = 0;
 deltaP = 0;
 
 % 大気圧 P[Pa] 大気密度 rho[kg/m3]
-P = 101325;
-rho = 1.2;
+% P = 101325;
+% rho = 1.2;
+[T, a, P, rho] = atmosphere_Rocket(x(2));
 
 % 定格推力 FT[N] その時刻における推力 Ft[N]
 % 推進剤の質量流量 delta_m[kg/s]

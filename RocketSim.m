@@ -17,6 +17,7 @@
 clear global;  clear all; close all;
 
 addpath ./quaternion
+addpath ./environment
 
 global Isp g0
 global FT Tend At CD CLa area
