@@ -1,12 +1,12 @@
 % ----
-% matlab odeã®ã‚¤ãƒ™ãƒ³ãƒˆ
+% matlab ode‚ÌƒCƒxƒ“ƒg
 % options = odeset('Events', @events_land);
-% ã®ã‚ˆã†ã«ä½¿ç”¨ã€‚MathWorksã®ä¾‹ã‚’å‚ç…§ã®ã“ã¨ã€‚
-% @param t: odeã®ä¸­ã®æ™‚åˆ»ï¼ˆãŠã¾ã˜ãªã„ï¼‰
-% @param x: odeã®ä¸­ã®çŠ¶æ…‹ï¼ˆãŠã¾ã˜ãªã„ï¼‰
-% @return value: ã‚¤ãƒ™ãƒ³ãƒˆç™ºç”Ÿåˆ¤å®šã™ã‚‹çŠ¶æ…‹é‡ï¼ˆæ°´å¹³åº§æ¨™ç³»ã®é«˜ã•æ–¹å‘ï¼‰
-% @return isterminal: value=0ã®ã¨ãã«ã‚·ãƒŸãƒ¥ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ã‚’åœæ­¢(1)ã™ã‚‹ã‹ç¶™ç¶šã™ã‚‹ã‹(0)
-% @return direction: æ±‚ã‚ã‚‹ã‚¼ãƒ­äº¤å·®ã®æ–¹å‘(-1:è² ã‹ã‚‰ã®ã¿, 0:ä¸¡æ–¹ã‹ã‚‰, 1:æ­£ã‹ã‚‰ã®ã¿)
+% ‚Ì‚æ‚¤‚Ég—pBMathWorks‚Ì—á‚ğQÆ‚Ì‚±‚ÆB
+% @param t: ode‚Ì’†‚Ìi‚¨‚Ü‚¶‚È‚¢j
+% @param x: ode‚Ì’†‚Ìó‘Ôi‚¨‚Ü‚¶‚È‚¢j
+% @return value: ƒCƒxƒ“ƒg”­¶”»’è‚·‚éó‘Ô—Êi…•½À•WŒn‚Ì‚‚³•ûŒüj
+% @return isterminal: value=0‚Ì‚Æ‚«‚ÉƒVƒ~ƒ…ƒŒ[ƒVƒ‡ƒ“‚ğ’â~(1)‚·‚é‚©Œp‘±‚·‚é‚©(0)
+% @return direction: ‹‚ß‚éƒ[ƒŒğ·‚Ì•ûŒü(-1:•‰‚©‚ç‚Ì‚İ, 0:—¼•û‚©‚ç, 1:³‚©‚ç‚Ì‚İ)
 % ----
 function [value,isterminal,direction] = events_land(t,x)
 	value = x(2);
