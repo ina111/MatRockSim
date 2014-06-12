@@ -19,8 +19,8 @@ addpath ./environment
 addpath ./aerodynamics
 
 % ---- ƒpƒ‰ƒ[ƒ^İ’è“Ç‚İ‚İ ----
-params_test
-% params
+% params_test
+params
 
 % ---- í”÷•ª•û’ö® ----
 AbsTol = [1e-4; % m
