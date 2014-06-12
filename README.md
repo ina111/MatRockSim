@@ -5,9 +5,8 @@ Matlab Rocket Flight Simulator
 
 水平座標系での飛翔をシミュレーション。
 
-'''
-MatRockSim
-'''
+    MatRockSim
+
 で実行。
 
 ## パラメータ設定
