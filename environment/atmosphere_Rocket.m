@@ -5,6 +5,11 @@
 % Standard Atmosphere 1976　ISO 2533:1975
 % 中間圏高度86kmまでの気温に対応している。それ以上は国際標準大気に当てはまらないので注意。
 % cf. http://www.pdas.com/hydro.pdf
+% @param h 高度[m]
+% @return T 温度[K]
+% @return a 音速[m/s]
+% @return P 気圧[Pa]
+% @return rho 空気密度[kg/m3]
 % 1:	対流圏		高度0m
 % 2:	対流圏界面	高度11000m
 % 3:	成層圏  		高度20000m
@@ -13,6 +18,11 @@
 % 6:	中間圏　 		高度51000m
 % 7:	中間圏　 		高度71000m
 % 8:	中間圏海面　	高度84852m
+% ----
+% Future Works:
+% ATOMOSPHERIC and SPACE FLIGHT DYNAMICSより
+% Standard ATOMOSPHEREのスクリプトに変更して高度2000kmまで対応にする。
+% 主に温度上昇と重力加速度とガス状数が変化することに対応すること。
 % ----
 function [T, a, P, rho] = atmosphere_Rocket( h )
 g = 9.80655;
