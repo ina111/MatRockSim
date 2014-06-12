@@ -18,6 +18,7 @@ clear global;  clear all; close all;
 
 addpath ./quaternion
 addpath ./environment
+addpath ./aerodynamics
 
 global Isp g0
 global FT Tend At CD CLa area
@@ -47,8 +48,8 @@ FT = 150;
 Tend = 4;
 At = 0.01;
 area = 0.010;
-CLa = 30;
-CD = 0.32;
+CLa = 3.5;
+% CD = 0.32;
 length_GCM = [-0.70; 0; 0]; length_A = [-0.50; 0; 0];
 IXX = 5; IYY = 5; IZZ = 1;
 IXXdot = 0; IYYdot = 0; IZZdot = 0;

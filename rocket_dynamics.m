@@ -65,6 +65,7 @@ quat = [x(8) x(9) x(10) x(11)]; % q_B2H
 % 機体座標系における空気力 FAB[N]
 if norm(VA) == 0.0
   xAB = [1; 0; 0]; % 機体座標系速度方向単位ベクトル
+  VAB = [0; 0; 0];
 else
   qVAB = quatmultiply(quat, quatmultiply([0 VA'], quatinv(quat)));
   VAB = qVAB(2:4)';
@@ -81,7 +82,9 @@ theta = asin(sintheta);
 zAB = cross(xAB, yAB);
 
 % 速度座標系からみた空気力 FAA[N]
+CD = cd_Rocket(norm(VAB) / a);
 FAA = -0.5*rho*norm(VA)^2*area*[CD; 0; CLa * theta];
+% FAA = -0.5*rho*norm(VA)^2*area*[CD; 0; CLa * theta];
 
 DCM_A2B = [xAB yAB zAB];
 FAB = DCM_A2B * FAA;
