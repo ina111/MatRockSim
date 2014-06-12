@@ -22,7 +22,7 @@ global IXXdot IYYdot IZZdot
 % azimth, elevation: ‰Šúp¨‚Ì•ûˆÊŠpA‹ÂŠp[deg]
 m0 = 4.0;
 Isp = 200;
-g0 = 9.8;
+g0 = 9.80665;
 FT = 150;
 Tend = 4;
 At = 0.01;

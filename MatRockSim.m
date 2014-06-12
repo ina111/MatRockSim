@@ -19,7 +19,8 @@ addpath ./environment
 addpath ./aerodynamics
 
 % ---- ƒpƒ‰ƒ[ƒ^İ’è“Ç‚İ‚İ ----
-params
+params_test
+% params
 
 % ---- í”÷•ª•û’ö® ----
 AbsTol = [1e-4; % m
@@ -31,7 +32,7 @@ options = odeset('Events', @events_land, 'RelTol', 1e-3, 'AbsTol', AbsTol);
 
 disp('Start Simulation...');
 tic
-[T, X] = ode23s(@rocket_dynamics, [0 40], x0, options);
+[T, X] = ode23s(@rocket_dynamics, [0 250], x0, options);
 toc
 
 % --------------
