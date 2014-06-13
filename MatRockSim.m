@@ -17,6 +17,7 @@ clear global;  clear all; close all;
 addpath ./quaternion
 addpath ./environment
 addpath ./aerodynamics
+addpath ./mapping
 
 % ---- ƒpƒ‰ƒ[ƒ^İ’è“Ç‚İ‚İ ----
 % params_test
@@ -103,3 +104,17 @@ if plot3_height < plot3_width_max
 else
     zlim([0 plot3_height*1.1]);
 end
+
+
+% ----
+% mapping
+% ----
+filename = 'test';
+% [xr, yr, zr] = blh2ecef(43.5807, 142.002083, 50);
+[xr, yr, zr] = blh2ecef(40.1408, 139.9860, 50);
+time_ref=123456.78;
+day_ref = [2013, 10,1];
+pos2GPSdata ( filename, T, X(:,2), X(:,3), X(:,4), xr, yr, zr, time_ref, day_ref )
+
+str_KML = pos2KML(filename, X(:,2), X(:,3), X(:,4),xr, yr, zr);
+KML2html(filename, str_KML);

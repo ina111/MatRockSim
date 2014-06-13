@@ -16,6 +16,7 @@ Matlab/OctaveでMatRockSimフォルダ内で下記コマンドで実行。
 
 ## Future Works
 - 推力データの読み込み
+- 慣性モーメントの時間変化。（推力とXdotなどの連携）
 - 圧力中心の遷移(Barrowman method??, マッハ数依存の空力モーメント係数 ??)
 - 上空の風の変化に対応
 - GPSシミュレータやGoogle Earthに読み込み可能にデータダンプ
