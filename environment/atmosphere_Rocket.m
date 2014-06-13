@@ -17,7 +17,7 @@
 % 5:	成層圏界面　	高度47000m
 % 6:	中間圏　 		高度51000m
 % 7:	中間圏　 		高度71000m
-% 8:	中間圏海面　	高度84852m
+% 8:	中間圏界面　	高度84852m
 % ----
 % Future Works:
 % ATOMOSPHERIC and SPACE FLIGHT DYNAMICSより
