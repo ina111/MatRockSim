@@ -109,9 +109,14 @@ end
 % ----
 % mapping
 % ----
+% outputƒtƒHƒ‹ƒ_‚ª‚È‚©‚Á‚½‚çì‚é
+if exist('output', 'dir') == 0
+  mkdir output;
+end
+
 tic
 disp('making KML and HTML files...');
 pos2GPSdata(filename, T, X(:,2), X(:,3), X(:,4), xr, yr, zr, time_ref, day_ref )
 str_KML = pos2KML(filename, X(:,2), X(:,3), X(:,4),xr, yr, zr);
-KML2html(filename, str_KML,40.1408, 139.9860, 50);
+KML2html(filename, str_KML,launch_phi, launch_lambda, launch_h);
 toc
