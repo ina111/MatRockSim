@@ -110,13 +110,8 @@ end
 % mapping
 % ----
 tic
-filename = 'test';
-% [xr, yr, zr] = blh2ecef(43.5807, 142.002083, 50);
-[xr, yr, zr] = blh2ecef(40.1408, 139.9860, 50);
-time_ref=123456.78;
-day_ref = [2013, 10,1];
-pos2GPSdata ( filename, T, X(:,2), X(:,3), X(:,4), xr, yr, zr, time_ref, day_ref )
-
+disp('making KML and HTML files...');
+pos2GPSdata(filename, T, X(:,2), X(:,3), X(:,4), xr, yr, zr, time_ref, day_ref )
 str_KML = pos2KML(filename, X(:,2), X(:,3), X(:,4),xr, yr, zr);
-KML2html(filename, str_KML);
+KML2html(filename, str_KML,40.1408, 139.9860, 50);
 toc

@@ -1,11 +1,11 @@
 % ----
-% å°„ç‚¹åº§æ¨™ç³»ã‹ã‚‰ECEFåº§æ¨™ç³»ã¸åº§æ¨™å¤‰æ›
-% @param u,e,n å°„ç‚¹ä¸­å¿ƒåº§æ¨™ç³»ã®Up-East-Northåº§æ¨™[m] (nx1)x3
-% @param xr,yr,zr ECEFåº§æ¨™ä¸Šã®å‚ç…§ä½ç½®ï¼ˆå°„ç‚¹ï¼‰:[m] (1x1)x3
-% @return x,y,z ECEFåº§æ¨™ç³»ä¸Šã®åº§æ¨™[m] (nx1)x3
+% Ë“_À•WŒn‚©‚çECEFÀ•WŒn‚ÖÀ•W•ÏŠ·
+% @param u,e,n Ë“_’†SÀ•WŒn‚ÌUp-East-NorthÀ•W[m] (nx1)x3
+% @param xr,yr,zr ECEFÀ•Wã‚ÌQÆˆÊ’uiË“_j:[m] (1x1)x3
+% @return x,y,z ECEFÀ•WŒnã‚ÌÀ•W[m] (nx1)x3
 % ----
 function [x, y, z] = launch2ecef(u, e, n, xr, yr, zr)
-% å°„ç‚¹ã®ç·¯åº¦çµŒåº¦
+% Ë“_‚ÌˆÜ“xŒo“x
 [phi, ramda, height] = ecef2blh(xr,yr,zr);
 phi = deg2rad(phi);
 ramda = deg2rad(ramda);

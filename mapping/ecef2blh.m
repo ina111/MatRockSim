@@ -1,25 +1,25 @@
 % ----
-% ECEFåº§æ¨™ã‹ã‚‰ç·¯åº¦çµŒåº¦é«˜åº¦ã«å¤‰æ›
-% ç·¯åº¦çµŒåº¦é«˜åº¦ã®ãƒ‰ã‚¤ãƒ„èªèª­ã¿ã®é ­æ–‡å­—BLH
-% åœ°çƒä¸­å¿ƒåœ°çƒå›ºå®šåº§æ¨™ECEF(Earth Centered Earth Fixed)
-% @param x,y,z: ECEFåº§æ¨™ã§ã®ä½ç½®[m]
-% @return phi: ç·¯åº¦[deg]
-% @return lambda: çµŒåº¦[deg]
-% @return height: WGS84ã®å¹³å‡æµ·é¢é«˜åº¦[m]
+% ECEFÀ•W‚©‚çˆÜ“xŒo“x‚“x‚É•ÏŠ·
+% ˆÜ“xŒo“x‚“x‚ÌƒhƒCƒcŒê“Ç‚İ‚Ì“ª•¶šBLH
+% ’n‹…’†S’n‹…ŒÅ’èÀ•WECEF(Earth Centered Earth Fixed)
+% @param x,y,z: ECEFÀ•W‚Å‚ÌˆÊ’u[m]
+% @return phi: ˆÜ“x[deg]
+% @return lambda: Œo“x[deg]
+% @return height: WGS84‚Ì•½‹ÏŠC–Ê‚“x[m]
 % ----
 function [phi, lambda, height] = ecef2blh(x, y, z)
-% ---- WGS84ã®å®šæ•°å®šç¾© ----
-pi_GPS = 3.1415926535898; % GPSé–¢é€£ã§ä½¿ã‚ã‚Œã‚‹Ï€ã®å®šæ•°
-a = 6378137.0;	% WGS84ã®é•·è»¸[m]
-one_f = 298.257223563;	% æ‰å¹³ç‡fã®1/fï¼ˆå¹³æ»‘åº¦ï¼‰
-b = a * (1.0 - 1.0 / one_f);	% WGS84ã®çŸ­è»¸[m] b = 6356752.314245
-e2 = (1.0 / one_f) * (2.0 - (1.0 / one_f));	% ç¬¬ä¸€é›¢å¿ƒç‡eã®2ä¹—
-ed2 = (e2 * a * a / (b * b));	% ç¬¬äºŒé›¢å¿ƒç‡e'ã®2ä¹—
-n = @(phi_n) a ./ sqrt(1.0 - e2 .* sin(deg2rad(phi_n)).^2); % ç„¡åé–¢æ•°
-% n = a ./ sqrt(1.0 - e2 .* sin(deg2rad(phi)).^2);	% ãã®ç·¯åº¦ã§ã®WGS84æ¥•å††ä½“é«˜
-p = sqrt(x.^2 + y.^2);	% ç¾åœ¨ä½ç½®ã§ã®åœ°å¿ƒã‹ã‚‰ã®è·é›¢[m]
+% ---- WGS84‚Ì’è”’è‹` ----
+pi_GPS = 3.1415926535898; % GPSŠÖ˜A‚Åg‚í‚ê‚éƒÎ‚Ì’è”
+a = 6378137.0;	% WGS84‚Ì’·²[m]
+one_f = 298.257223563;	% G•½—¦f‚Ì1/fi•½ŠŠ“xj
+b = a * (1.0 - 1.0 / one_f);	% WGS84‚Ì’Z²[m] b = 6356752.314245
+e2 = (1.0 / one_f) * (2.0 - (1.0 / one_f));	% ‘æˆê—£S—¦e‚Ì2æ
+ed2 = (e2 * a * a / (b * b));	% ‘æ“ñ—£S—¦e'‚Ì2æ
+n = @(phi_n) a ./ sqrt(1.0 - e2 .* sin(deg2rad(phi_n)).^2); % –³–¼ŠÖ”
+% n = a ./ sqrt(1.0 - e2 .* sin(deg2rad(phi)).^2);	% ‚»‚ÌˆÜ“x‚Å‚ÌWGS84‘È‰~‘Ì‚
+p = sqrt(x.^2 + y.^2);	% Œ»İˆÊ’u‚Å‚Ì’nS‚©‚ç‚Ì‹——£[m]
 theta = atan2(z.*a, p.*b);	% [rad]
-% --- å®šæ•°å®šç¾©çµ‚äº† ---
+% --- ’è”’è‹`I—¹ ---
 phi = rad2deg(atan2((z + ed2 .* b .* sin(theta).^3), p - e2 * a * cos(theta).^3));
 lambda = rad2deg(atan2(y,x));
 height = p ./ cos(deg2rad(phi)) - n(phi);

@@ -43,3 +43,20 @@ vel0 = [0.0; 0.0; 0.0]; % m/s
 quat0 = attitude(azimth, elevation);
 omega0 = [0.0; 0.0; 0.0]; % rad/s
 x0 = [m0; pos0; vel0; quat0; omega0];
+
+
+% ---- mappingのための変数 ----
+% filename: outputフォルダに出力するKML,HTMLファイルのファイル名(string)
+% launch_phi,lambda, h: 射点の緯度経度高度、度表示[deg][deg][m]
+% time_ref: 発射時刻[HHMMSS.SS] 例. 12時34分56.78秒→123456.78
+% day_ref: 発射日[year, month, day] 例. 2014年1月1日→[2014, 1, 1]
+% ---- 参考 ----
+% 能代宇宙イベント第3堆積場射点 [40.1408, 139.9860, 20]
+% 伊豆大島裏砂漠射点 [34.731059, 139.415917, 465]
+filename = 'test';
+launch_phi = 34.731059; % 43.5807
+launch_lambda = 139.415917; % 142.002083
+launch_h = 465; % 50
+time_ref=123456.78;
+day_ref = [2013, 10,1];
+[xr, yr, zr] = blh2ecef(launch_phi, launch_lambda, launch_h);

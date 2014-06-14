@@ -1,9 +1,9 @@
 function [] = pos2GPSdata ( filename, time, u, e, n, xr, yr, zr, time_ref, day_ref )
-% ç·¯åº¦çµŒåº¦é«˜åº¦ã®æƒ…å ±ã‹ã‚‰æ“¬ä¼¼çš„ãªGPSãƒ‡ãƒ¼ã‚¿ï¼ˆ$GPGGA)ã‚’ä½œã‚‹ã€‚
-% Google Earthã«èª­ã¿è¾¼ã¾ã›ã‚‹ãŸã‚ã«ã‚ã–ã‚ã–ä½œã‚‹ã€‚
-% filename:ãƒ•ã‚¡ã‚¤ãƒ«å
-% time[:]:time_refã‹ã‚‰ã®çµŒéæ™‚é–“[s]
-% blh[:,3]:ç·¯åº¦çµŒåº¦é«˜åº¦[ç·¯åº¦ã€çµŒåº¦ã€é«˜åº¦][deg deg m]
+% ˆÜ“xŒo“x‚“x‚Ìî•ñ‚©‚ç‹[—“I‚ÈGPSƒf[ƒ^i$GPGGA)‚ğì‚éB
+% Google Earth‚É“Ç‚İ‚Ü‚¹‚é‚½‚ß‚É‚í‚´‚í‚´ì‚éB
+% filename:ƒtƒ@ƒCƒ‹–¼
+% time[:]:time_ref‚©‚ç‚ÌŒo‰ßŠÔ[s]
+% blh[:,3]:ˆÜ“xŒo“x‚“x[ˆÜ“xAŒo“xA‚“x][deg deg m]
 % time_ref:JST time[HHMMSS.SS] ex.123456.78
 % day_ref:UTC year,month,day[1x3][year, month, day] ex.[2013, 10,1]
 fileaddress = strcat('output/',filename,'.nmea');
@@ -15,10 +15,10 @@ fileaddress = strcat('output/',filename,'.nmea');
 len = length(phi);
 
 for i = 1:len
-	% $GPGGAã‚»ãƒ³ãƒ†ãƒ³ã‚¹ç”Ÿæˆ
-	time_UTC = elapsedtime2GPS_UTC(time(i),time_ref);	% UTCç¾åœ¨æ™‚é–“
-	latitude = blh_deg2blh_GPSformat(phi(i));		% ç·¯åº¦
-	longitude = blh_deg2blh_GPSformat(lambda(i));	% çµŒåº¦
+	% $GPGGAƒZƒ“ƒeƒ“ƒX¶¬
+	time_UTC = elapsedtime2GPS_UTC(time(i),time_ref);	% UTCŒ»İŠÔ
+	latitude = blh_deg2blh_GPSformat(phi(i));		% ˆÜ“x
+	longitude = blh_deg2blh_GPSformat(lambda(i));	% Œo“x
 	height = h(i);
 	str1 = '$GPGGA,';
 	str2 = sprintf('%09.2f,%10.6f,N,%011.6f,', time_UTC, latitude, longitude);
@@ -28,7 +28,7 @@ for i = 1:len
 	str_file = strcat(str_file, str_checksum, '\n');
 	fprintf(fid, str_file);
 
-	% $GPZDAã®æ—¥ä»˜ã‚»ãƒ³ãƒ†ãƒ³ã‚¹ç”Ÿæˆ
+	% $GPZDA‚Ì“ú•tƒZƒ“ƒeƒ“ƒX¶¬
 	str4 = sprintf('$GPZDA,%09.02f,%02d,%02d,%04d,00,00*', time_UTC, day_ref(3), day_ref(2),day_ref(1));
 	str_checksum = make_checksum_nmea(str4);
 	str_file = strcat(str4, str_checksum, '\n');
@@ -38,34 +38,34 @@ fclose(fid);
 end
 
 function output = make_checksum_nmea(str)
-% NMEAã‚»ãƒ³ãƒ†ãƒ³ã‚¹ã®ãƒã‚§ãƒƒã‚¯ã‚µãƒ ä½œæˆ
-% '$GPGGA,~~~,M,,0000*'ã¾ã§ã®æ–‡å­—åˆ—ã‚’èª­ã¿è¾¼ã‚“ã§ãƒã‚§ãƒƒã‚¯ã‚µãƒ (8bitã®16é€²æ•°è¡¨è¨˜0x**)å‡ºåŠ›
-% â€œ$â€ã€â€!â€ã€â€*â€ã‚’å«ã¾ãªã„ã‚»ãƒ³ãƒ†ãƒ³ã‚¹ä¸­ã®å…¨ã¦ã®æ–‡å­— ã®8ãƒ“ãƒƒãƒˆã®æ’ä»–çš„è«–ç†å’Œã€‚","ã¯å«ã‚€ã®ã§æ³¨æ„
+% NMEAƒZƒ“ƒeƒ“ƒX‚Ìƒ`ƒFƒbƒNƒTƒ€ì¬
+% '$GPGGA,~~~,M,,0000*'‚Ü‚Å‚Ì•¶š—ñ‚ğ“Ç‚İ‚ñ‚Åƒ`ƒFƒbƒNƒTƒ€(8bit‚Ì16i”•\‹L0x**)o—Í
+% g$hAh!hAh*h‚ğŠÜ‚Ü‚È‚¢ƒZƒ“ƒeƒ“ƒX’†‚Ì‘S‚Ä‚Ì•¶š ‚Ì8ƒrƒbƒg‚Ì”r‘¼“I˜_—˜aB","‚ÍŠÜ‚Ş‚Ì‚Å’ˆÓ
 % ex. $GPGGA,125044.001,3536.1985,N,13941.0743,E,2,09,1.0,12.5,M,36.1,M,,0000*6A
 num_str = length(str);
 checksum = uint8(0);
 for i = 1:num_str
 	if (str(i) ~= '$') && (str(i) ~= '!') && (str(i) ~= '*')
-		checksum = bitxor(checksum, uint8(str(i))); % bitæ•°ã®æ’ä»–çš„è«–ç†å’ŒXOR
+		checksum = bitxor(checksum, uint8(str(i))); % bit”‚Ì”r‘¼“I˜_—˜aXOR
 	end
 end
 output = sprintf('%02X',checksum);
 end
 
 function output = blh_deg2blh_GPSformat(pos)
-% ç·¯åº¦çµŒåº¦[deg]ã‹ã‚‰NMEAã®ã‚»ãƒ³ãƒ†ãƒ³ã‚¹å½¢å¼ã«å¤‰æ›ã™ã‚‹é–¢æ•°
-% ex.ç·¯åº¦48.1167***åº¦ã‚’NEMAãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã®4807.03***ã®åˆ†åˆ»ã¿ã«å¤‰æ›
-% [DD.DDDDDDDD]->[DDMM.MMMMMM](D:åº¦,M:åˆ†)
-% pos:ç·¯åº¦çµŒåº¦[deg]([DD.DDDDDDDD])
-% output_str:NMEAãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã®ç·¯åº¦çµŒåº¦ã®æ–‡å­—åˆ—[DDMM.MMMMMM]
-degree = fix(pos);	% å°æ•°ç‚¹ä»¥ä¸‹åˆ‡ã‚Šæ¨ã¦
+% ˆÜ“xŒo“x[deg]‚©‚çNMEA‚ÌƒZƒ“ƒeƒ“ƒXŒ`®‚É•ÏŠ·‚·‚éŠÖ”
+% ex.ˆÜ“x48.1167***“x‚ğNEMAƒtƒH[ƒ}ƒbƒg‚Ì4807.03***‚Ì•ª‚İ‚É•ÏŠ·
+% [DD.DDDDDDDD]->[DDMM.MMMMMM](D:“x,M:•ª)
+% pos:ˆÜ“xŒo“x[deg]([DD.DDDDDDDD])
+% output_str:NMEAƒtƒH[ƒ}ƒbƒg‚ÌˆÜ“xŒo“x‚Ì•¶š—ñ[DDMM.MMMMMM]
+degree = fix(pos);	% ¬”“_ˆÈ‰ºØ‚èÌ‚Ä
 minute = (pos - degree) * 60;
 output = degree * 100 + minute;
 end
 
 function output = elapsedtime2GPS_UTC(time,time_ref)
-% åŸºæº–æ™‚åˆ»(time_ref)ã¨ã‚³ãƒ³ãƒ”ãƒ¥ãƒ¼ã‚¿æ™‚é–“(time)ã‚’è¶³ã—ã¦ã‚¿ã‚¤ãƒ ã‚¹ã‚¿ãƒ³ãƒ—ç”Ÿæˆï¼ˆUTCï¼‰
-% time:time_refã‹ã‚‰ã®çµŒéæ™‚é–“[s] class(float)
+% Šî€(time_ref)‚ÆƒRƒ“ƒsƒ…[ƒ^ŠÔ(time)‚ğ‘«‚µ‚Äƒ^ƒCƒ€ƒXƒ^ƒ“ƒv¶¬iUTCj
+% time:time_ref‚©‚ç‚ÌŒo‰ßŠÔ[s] class(float)
 % time_ref:JST time[HHMMSS.SS] class(float)
 % output:UTC time[HHMMSS.SS] class(float)
 hour = 0;
