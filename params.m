@@ -4,6 +4,8 @@ global FT Tend At CLa area
 global length_GCM length_A
 global IXX IYY IZZ
 global IXXdot IYYdot IZZdot
+global VWH
+global para_Cd para_S
 
 % ---- パラメータ設定 ----
 % m0: 初期質量[kg]
@@ -20,6 +22,7 @@ global IXXdot IYYdot IZZdot
 % IXX,IYY,IZZ: 慣性モーメント[kgm2]
 % IXXdot,IYYdot,IZZdot: 慣性モーメントの時間変化[kgm2/sec]
 % azimth, elevation: 初期姿勢の方位角、仰角[deg]
+% VWH:　水平座標系においての風速(Up-East-North) [m/s] (3x1)
 m0 = 4.0;
 Isp = 200;
 g0 = 9.80665;
@@ -32,6 +35,7 @@ length_GCM = [-0.70; 0; 0]; length_A = [-0.50; 0; 0];
 IXX = 5; IYY = 5; IZZ = 1;
 IXXdot = 0; IYYdot = 0; IZZdot = 0;
 azimth = 45; elevation = 80;
+VWH = [0; 0; 0];
 
 % ---- 常微分方程式に使う状態量の初期化 ----
 % pos0: 射点中心慣性座標系における位置（Up-East-North)[m] (3x1)
@@ -60,3 +64,9 @@ launch_h = 465; % 50
 time_ref=123456.78;
 day_ref = [2013, 10,1];
 [xr, yr, zr] = blh2ecef(launch_phi, launch_lambda, launch_h);
+
+
+
+% パラシュート
+para_Cd = 1.0;
+para_S = 2;

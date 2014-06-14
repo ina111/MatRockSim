@@ -29,13 +29,19 @@ AbsTol = [1e-4; % m
           1e-4; 1e-4; 1e-4; % vel
           1e-4; 1e-4; 1e-4; 1e-4; %quat
           1e-3; 1e-3; 1e-3]; % omega
-options = odeset('Events', @events_land, 'RelTol', 1e-3, 'AbsTol', AbsTol);
+  options = odeset('Events', @events_land, 'RelTol', 1e-3, 'AbsTol', AbsTol);
 
 disp('Start Simulation...');
+time_parachute = 15;
 tic
-[T, X] = ode23s(@rocket_dynamics, [0 250], x0, options);
+[T_rocket, X_rocket] = ode23s(@rocket_dynamics, [0 time_parachute], x0, options);
+toc
+tic
+[T_parachute, X_parachute] = ode23s(@parachute_dynamics, [time_parachute 250], X_rocket(length(X_rocket),:), options);
 toc
 
+T = [T_rocket; T_parachute];
+X = [X_rocket; X_parachute];
 % --------------
 %     plot
 % --------------
