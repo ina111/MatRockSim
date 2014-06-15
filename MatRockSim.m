@@ -22,6 +22,7 @@ addpath ./mapping
 % ---- パラメータ設定読み込み ----
 % params_test
 params
+% params_M3S
 
 % ---- 常微分方程式 ----
 AbsTol = [1e-4; % m
@@ -31,10 +32,28 @@ AbsTol = [1e-4; % m
           1e-3; 1e-3; 1e-3]; % omega
 options = odeset('Events', @events_land, 'RelTol', 1e-3, 'AbsTol', AbsTol);
 
+time_end = 400;
+if time_parachute > time_end
+  time_parachute = time_end - 0.1;
+end
+
 disp('Start Simulation...');
-tic
-[T, X] = ode23s(@rocket_dynamics, [0 250], x0, options);
-toc
+
+% パラシュートの有無でシミュレーションの場合分け
+if para_exist == true
+  tic
+  [T_rocket, X_rocket] = ode23s(@rocket_dynamics, [0 time_parachute], x0, options);
+  toc;tic
+  [T_parachute, X_parachute] = ode23s(@parachute_dynamics, [time_parachute time_end], X_rocket(length(X_rocket),:), options);
+  toc
+  T = [T_rocket; T_parachute];
+  X = [X_rocket; X_parachute];
+else
+  % パラボリックフライト
+  tic
+  [T, X] = ode23s(@rocket_dynamics, [0 time_end], x0, options);
+  toc
+end
 
 % --------------
 %     plot

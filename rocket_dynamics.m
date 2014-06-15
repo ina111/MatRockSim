@@ -31,6 +31,7 @@ global FT Tend At CD CLa area
 global length_GCM length_A
 global IXX IYY IZZ
 global IXXdot IYYdot IZZdot
+global VWH
 
 % ---- „—Í ----
 % ƒWƒ“ƒoƒ‹Šp“x delta_Y, delta_P[rad]
