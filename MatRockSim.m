@@ -21,8 +21,8 @@ addpath ./mapping
 
 % ---- ƒpƒ‰ƒ[ƒ^İ’è“Ç‚İ‚İ ----
 % params_test
-% params
-params_M3S
+params
+% params_M3S
 
 % ---- í”÷•ª•û’ö® ----
 AbsTol = [1e-4; % m

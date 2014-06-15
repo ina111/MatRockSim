@@ -38,12 +38,14 @@ azimth = 45; elevation = 80;
 VWH = [0; 0; 0];
 
 % ---- パラシュート ----
+% para_exist : パラシュートがあるかどうか[true,false]
 % para_Cd: パラシュート抗力係数[-]
 % para_Dia: パラシュート開傘時の直径[m]
 % para_S: パラシュート面積[m2]
+para_exist = true;
 para_Cd = 1.0;
 para_Dia = 1.5;
-time_parachute = 10;
+time_parachute = 15;
 para_S = para_Dia * para_Dia / 4 * pi;
 
 % ---- 常微分方程式に使う状態量の初期化 ----
