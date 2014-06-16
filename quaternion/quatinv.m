@@ -1,8 +1,8 @@
 % ----
-% ЛtГNГHБ[Г^ГjГIГУ
-% @param q: ГNГHБ[Г^ГjГIГУ (1x4)
-% @param o: ЛtГNГHБ[Г^ГjГIГУ (1x4)
+% ╡╒епейб╝е┐е╦екеє
+% @param q: епейб╝е┐е╦екеє (1x4)
+% @param o: ╡╒епейб╝е┐е╦екеє (1x4)
 % ----
 function o = quatinv(p)
-  o = quatconj(p) / (norm(p)^2);
+  o = quatconj(p) / (quatnorm(p)^2);
 end
