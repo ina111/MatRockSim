@@ -1,5 +1,5 @@
 function n = quatnorm( q )
-%  QUATNORM 繧ｯ繧ｩ繝ｼ繧ｿ繝九が繝ｳ縺ｮ繝弱Ν繝.
+%  QUATNORM クォータニオンのノルム.
 %
 %   Examples:
 %
