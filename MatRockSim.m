@@ -127,7 +127,7 @@ end
 
 
 % ----
-% mapping
+% mapping, gpssim
 % ----
 % outputƒtƒHƒ‹ƒ_‚ª‚È‚©‚Á‚½‚çì‚é
 if exist('output', 'dir') == 0
