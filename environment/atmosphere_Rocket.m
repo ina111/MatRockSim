@@ -1,5 +1,5 @@
-% ----
-% 標準大気モデルを用いた、高度による温度、音速、大気圧、空気密度の関数
+function [T, a, P, rho] = atmosphere_Rocket( h )
+% ATMOSPHERE_ROCKET 標準大気モデルを用いた、高度による温度、音速、大気圧、空気密度の関数
 % 高度は基準ジオポテンシャル高度を元にしている。
 % 標準大気の各層ごとの気温減率から定義式を用いて計算している。
 % Standard Atmosphere 1976　ISO 2533:1975
@@ -18,13 +18,14 @@
 % 6:	中間圏　 		高度51000m
 % 7:	中間圏　 		高度71000m
 % 8:	中間圏界面　	高度84852m
+
 % ----
 % Future Works:
 % ATOMOSPHERIC and SPACE FLIGHT DYNAMICSより
 % Standard ATOMOSPHEREのスクリプトに変更して高度2000kmまで対応にする。
 % 主に温度上昇と重力加速度とガス状数が変化することに対応すること。
 % ----
-function [T, a, P, rho] = atmosphere_Rocket( h )
+
 g = 9.80655;
 gamma = 1.4;
 R = 287.0531;

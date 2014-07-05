@@ -1,5 +1,5 @@
 function qout = quatnormalize( q )
-%  QUATNORMALIZE 繧ｯ繧ｩ繝ｼ繧ｿ繝九が繝ｳ縺ｮ豁｣隕丞喧.
+%  QUATNORMALIZE クォータニオンの正規化.
 %
 %   Examples:
 %

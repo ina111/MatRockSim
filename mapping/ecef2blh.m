@@ -1,13 +1,12 @@
-% ----
-% ECEF座標から緯度経度高度に変換
+function [phi, lambda, height] = ecef2blh(x, y, z)
+% ECEF2BLH ECEF座標から緯度経度高度に変換
 % 緯度経度高度のドイツ語読みの頭文字BLH
 % 地球中心地球固定座標ECEF(Earth Centered Earth Fixed)
 % @param x,y,z: ECEF座標での位置[m]
 % @return phi: 緯度[deg]
 % @return lambda: 経度[deg]
 % @return height: WGS84の平均海面高度[m]
-% ----
-function [phi, lambda, height] = ecef2blh(x, y, z)
+
 % ---- WGS84の定数定義 ----
 pi_GPS = 3.1415926535898; % GPS関連で使われるπの定数
 a = 6378137.0;	% WGS84の長軸[m]

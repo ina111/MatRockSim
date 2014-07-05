@@ -1,16 +1,16 @@
-% ----
-% ECEF座標系における機体の位置、射点の位置からGoogle Earthに読み込めるように
+function str = pos2KML( filename, u, e, n, xr, yr, zr )
+% POS2KML ECEF座標系における機体の位置、射点の位置からGoogle Earthに読み込めるように
 % KMLファイル形式に変換し、outputフォルダに出力する。
 % @param filename 出力するファイル名(string)
 % @param u, e, n ECEF座標系での機体の位置Up-East-Northの順番[m]
 % @param xr, yr, zr ECEF座標系での射点の位置Up-East-Northの順番[m]
 % @return str KMLファイルの中身を出力
+
 % ----
 % Future Work
 % TimeStampタグとPointタグを使ってPlacemarkアイコンをアニメーションさせる。
 % パラシュート解散時などイベント事に色を変える。
 % ----
-function str = pos2KML( filename, u, e, n, xr, yr, zr )
 
 fileaddress = strcat('output/',filename,'.kml');
 [fid, msg] = fopen(fileaddress, 'w');
