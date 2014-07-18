@@ -26,12 +26,24 @@ function [ dx ] = rocket_dynamics( t, x )
 % x(14): omegaZ 機体座標系の角速度[rad/s]
 % ----
 
-global Isp g0
-global FT Tend At CD CLa area
-global length_GCM length_A
-global IXX IYY IZZ
-global IXXdot IYYdot IZZdot
+global ROCKET
 global VWH
+
+% ROCKET構造体から変数読み取り
+Isp = ROCKET.Isp;
+g0 = ROCKET.g0;
+FT = ROCKET.FT;
+Tend = ROCKET.Tend;
+CLa = ROCKET.CLa;
+Area = ROCKET.Area;
+length_GCM = ROCKET.length_GCM;
+length_A = ROCKET.length_A;
+IXX = ROCKET.Ijj(1);
+IYY = ROCKET.Ijj(2);
+IZZ = ROCKET.Ijj(3);
+IXXdot = ROCKET.IXXdot;
+IYYdot = ROCKET.IYYdot;
+IZZdot = ROCKET.IZZdot;
 
 % ---- 推力 ----
 % ジンバル角度 delta_Y, delta_P[rad]
@@ -84,7 +96,7 @@ zAB = cross(xAB, yAB);
 
 % 速度座標系からみた空気力 FAA[N]
 CD = cd_Rocket(norm(VAB) / a);
-FAA = -0.5*rho*norm(VA)^2*area*[CD; 0; CLa * theta];
+FAA = -0.5*rho*norm(VA)^2*Area*[CD; 0; CLa * theta];
 % FAA = -0.5*rho*norm(VA)^2*area*[CD; 0; CLa * theta];
 
 DCM_A2B = [xAB yAB zAB];

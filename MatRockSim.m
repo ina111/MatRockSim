@@ -18,6 +18,7 @@ addpath ./quaternion
 addpath ./environment
 addpath ./aerodynamics
 addpath ./mapping
+addpath ./gpssim
 
 % ---- パラメータ設定読み込み ----
 % params_test
@@ -126,7 +127,7 @@ end
 
 
 % ----
-% mapping
+% mapping, gpssim
 % ----
 % outputフォルダがなかったら作る
 if exist('output', 'dir') == 0
@@ -138,4 +139,5 @@ disp('making KML and HTML files...');
 pos2GPSdata(filename, T, X(:,2), X(:,3), X(:,4), xr, yr, zr, time_ref, day_ref )
 str_KML = pos2KML(filename, X(:,2), X(:,3), X(:,4),xr, yr, zr);
 KML2html(filename, str_KML,launch_phi, launch_lambda, launch_h);
+pos2GPSsim(filename, T, X, xr, yr, zr);
 toc

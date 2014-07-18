@@ -1,5 +1,5 @@
-% ----
-% KMLファイルからPCのブラウザで表示可能なようにHTMLファイルを出力
+function [] = KML2html (filename, str, launch_phi, launch_lambda, launch_h)
+% KML2HTML KMLファイルからPCのブラウザで表示可能なようにHTMLファイルを出力
 % Google Earth APIを使用して、HTMLの<head>要素の中に
 % API呼び出しのjavascriptを記述。入力のKMLファイルの中身はperceKml関数を使用
 % Earth APIにおけるKMLの使用法にはKmlNetworkLink, fetchKml, perceKml
@@ -8,8 +8,6 @@
 % @param filename 出力するHTMLファイル名(string)
 % @param str 必要なKMLファイル
 % @param launch_phi, launch_lambda, launch_h 射点の緯度経度高度[deg][deg][m]
-% ----
-function [] = KML2html (filename, str, launch_phi, launch_lambda, launch_h)
 
 fileaddress = strcat('output/',filename,'.html');
 [fid, msg] = fopen(fileaddress, 'w');

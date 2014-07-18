@@ -1,7 +1,7 @@
 function angles = quat2euler( q )
-% QUAT2EULER UENåº§æ¨™ç³»ã‹ã‚‰ã®3-2-1ã®å›è»¢ã§ã®yaw,pitch,rollã®ã‚ªã‚¤ãƒ©ãƒ¼è§’
-% @param q: UENåº§æ¨™ç³»ã‹ã‚‰æ©Ÿä½“åº§æ¨™ç³»ã¸ã®å¤‰æ›ã‚¯ã‚©ãƒ¼ã‚¿ãƒ‹ã‚ªãƒ³ (Nx4)
-% @return angles: 3-2-1ã®å›è»¢ã§ã®yaw, pitch, rollã®ã‚ªã‚¤ãƒ©ãƒ¼è§’(rad) (Nx3)
+% QUAT2EULER UENÀ•WŒn‚©‚ç‚Ì3-2-1‚Ì‰ñ“]‚Å‚Ìyaw,pitch,roll‚ÌƒIƒCƒ‰[Šp
+% @param q: UENÀ•WŒn‚©‚ç‹@‘ÌÀ•WŒn‚Ö‚Ì•ÏŠ·ƒNƒH[ƒ^ƒjƒIƒ“ (Nx4)
+% @return angles: 3-2-1‚Ì‰ñ“]‚Å‚Ìyaw, pitch, roll‚ÌƒIƒCƒ‰[Šp(rad) (Nx3)
 %
 %   Examples:
 %

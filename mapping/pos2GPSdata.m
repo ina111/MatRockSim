@@ -1,11 +1,11 @@
 function [] = pos2GPSdata ( filename, time, u, e, n, xr, yr, zr, time_ref, day_ref )
-% 緯度経度高度の情報から擬似的なGPSデータ（$GPGGA)を作る。
-% Google Earthに読み込ませるためにわざわざ作る。
-% filename:ファイル名
-% time[:]:time_refからの経過時間[s]
-% blh[:,3]:緯度経度高度[緯度、経度、高度][deg deg m]
-% time_ref:JST time[HHMMSS.SS] ex.123456.78
-% day_ref:UTC year,month,day[1x3][year, month, day] ex.[2013, 10,1]
+% POS2GPSDATA 緯度経度高度の情報から擬似的なGPSデータ（$GPGGA)を作る。
+% Google Earthに読み込ませるために作る。
+% @param filename:ファイル名
+% @param time[:]:time_refからの経過時間[s]
+% @param blh[:,3]:緯度経度高度[緯度、経度、高度][deg deg m]
+% @param time_ref:JST time[HHMMSS.SS] ex.123456.78
+% @param day_ref:UTC year,month,day[1x3][year, month, day] ex.[2013, 10,1]
 fileaddress = strcat('output/',filename,'.nmea');
 [fid, msg] = fopen(fileaddress, 'w');
 

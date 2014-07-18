@@ -1,9 +1,5 @@
 % ---- グローバル変数の設定（いじらない） ----
-global Isp g0
-global FT Tend At CLa area
-global length_GCM length_A
-global IXX IYY IZZ
-global IXXdot IYYdot IZZdot
+global ROCKET
 global VWH
 global para_Cd para_S
 
@@ -23,18 +19,25 @@ global para_Cd para_S
 % IXXdot,IYYdot,IZZdot: 慣性モーメントの時間変化[kgm2/sec]
 % azimth, elevation: 初期姿勢の方位角、仰角[deg]
 % VWH:　水平座標系においての風速(Up-East-North) [m/s] (3x1)
-m0 = 45247.4;
-Isp = 266;
-g0 = 9.80665;
-FT = 1147000;
-Tend = 53;
-At = 0.63;
-area = 1.41^2 / 4 * pi;
-CLa = 3.5;
-length_GCM = [-9.76; 0; 0]; length_A = [-1.0; 0; 0];
-IXX = 188106; IYY = 188106; IZZ = 1839;
-IXXdot = 0; IYYdot = 0; IZZdot = 0;
-azimth = 135; elevation = 88;
+ROCKET = struct( ...
+'m0', 45247.4, ...
+'Isp', 266, ...
+'g0', 9.80665, ...
+'FT', [1147000], ...
+'Tend', [53], ...
+'At', 0.63, ...
+'Area', 1.41^2 / 4 * pi, ...
+'CLa', 3.5, ...
+'length_GCM', [-9.76; 0; 0], ...
+'length_A', [-1.0; 0; 0], ...
+'Ijj', [188106; 188106; 1839], ...
+'IXXdot', 0, ...
+'IYYdot', 0, ...
+'IZZdot', 0, ...
+'azimth', 135, ...
+'elevation', 88 ...
+);
+
 VWH = [0; 0; 0];
 
 % ---- パラシュート ----
@@ -55,9 +58,9 @@ para_S = para_Dia * para_Dia / 4 * pi;
 % omega0: 機体座標系における機体に働く角速度[rad/s] (3x1)
 pos0 = [0.0; 0.0; 0.0]; % m
 vel0 = [0.0; 0.0; 0.0]; % m/s
-quat0 = attitude(azimth, elevation);
+quat0 = attitude(ROCKET.azimth, ROCKET.elevation);
 omega0 = [0.0; 0.0; 0.0]; % rad/s
-x0 = [m0; pos0; vel0; quat0; omega0];
+x0 = [ROCKET.m0; pos0; vel0; quat0; omega0];
 
 
 % ---- mappingのための変数 ----
