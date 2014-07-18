@@ -1,5 +1,5 @@
 % -----
-% This calculate the derivative of quaternion.
+% This calculate a derivative of quaternion.
 % dq/dt = - 1/2 * [0 omega] * q
 % -----
 function dquat = deltaquat(quat, omega)

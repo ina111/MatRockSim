@@ -8,7 +8,7 @@ addpath ./aerodynamics
 addpath ./mapping
 
 ROCKET = params_rocket();
-quat0 = attitude(ROCKET.azimth, ROCKET.elevation)';
+quat0 = attitude(ROCKET.azimth, ROCKET.elevation);
 x0 = [ROCKET.m0; ROCKET.pos0; ROCKET.vel0; quat0; ROCKET.omega0];
 
 % angle0 = [0.0; (ROCKET.elevation-90)*pi/180; 0.0];
