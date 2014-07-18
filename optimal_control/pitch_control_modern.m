@@ -77,7 +77,7 @@ C_servo = horzcat(C_reg, [0; 0]);
 C_servo_observe = eye(length(C_servo));
 D_servo = D_reg;
 sys_servo = ss(A_servo, B_servo, C_servo, D_servo);
-sys_servo_observe = ss(A_servo, B_servo, C_servo_observe);
+sys_servo_observe = ss(A_servo, B_servo, C_servo_observe, [0]);
 
 % ---- 可制御性確認 ----
 % 可制御性ではなく、可安定性の議論が必要
