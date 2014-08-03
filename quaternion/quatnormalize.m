@@ -6,4 +6,4 @@ function qout = quatnormalize( q )
 %   Normalize q = [1 0 1 0]:
 %      normal = quatnormalize([1 0 1 0])
 
-qout = q./(quatmod( q )* ones(1,4));
+qout = q./(quatnorm( q )* ones(1,4));

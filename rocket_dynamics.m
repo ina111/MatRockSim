@@ -1,39 +1,43 @@
 % ----
-% ode�̂��߂̃��P�b�g���Ă̏����������
-% �ʒu�Ǝp�������߂邽�߂ɁA�u�ʒu�A���x�A�p���A�p���x�v����ԗʂɁB
-% 
-% ����Ă邱��
-% �@�̂ɂ����鐄�́A��C�́A�d�͂̎Z�o 
-% -> �@�̂ɂ����郂�[�����g�̎Z�o
-% -> �ʒu�̉^���������A���x�̉^���������A�p���̉^���������A�p���x�̉^��������
-% 
-% �������W�n�̎�����xyz�̏��Ԃ�Up-East-North
+% odeのためのロケット飛翔の常微分方程式
+% 位置と姿勢を求めるために、「位置、速度、姿勢、角速度」を状態量に。
+%
+% やってること
+% 機体にかかる推力、空気力、重力の算出
+% -> 機体にかかるモーメントの算出
+% -> 位置の運動方程式、速度の運動方程式、姿勢の運動方程式、角速度の運動方程式
+%
+% 水平座標系の取り方はxyzの順番にUp-East-North
 % ----
-function [ dx ] = rocket_dynamics( t, x )
-% x(1): mass ����[kg]
-% x(2): X_H �˓_���W�ʒu[m]
-% x(3): Y_H �˓_���W�ʒu[m]
-% x(4): Z_H �˓_���W�ʒu[m]
-% x(5): VX_H �˓_���W�Βn���x[m/s]
-% x(6): VY_H �˓_���W�Βn���x[m/s]
-% x(7): VZ_H �˓_���W�Βn���x[m/s]
+function [ dx ] = rocket_dynamics( t, x, u)
+% t: time 時刻[s]
+% x(1): mass 質量[kg]
+% x(2): X_H 射点座標位置[m]
+% x(3): Y_H 射点座標位置[m]
+% x(4): Z_H 射点座標位置[m]
+% x(5): VX_H 射点座標対地速度[m/s]
+% x(6): VY_H 射点座標対地速度[m/s]
+% x(7): VZ_H 射点座標対地速度[m/s]
 % x(8): q0 quaternion Body to Horizon[-]
 % x(9): q1 quaternion Body to Horizon[-]
 % x(10): q2 quaternion Body to Horizon[-]
 % x(11): q3 quaternion Body to Horizon[-]
-% x(12): omegaX �@�̍��W�n�̊p���x[rad/s]
-% x(13): omegaY �@�̍��W�n�̊p���x[rad/s]
-% x(14): omegaZ �@�̍��W�n�̊p���x[rad/s]
+% x(12): omegaX 機体座標系の角速度[rad/s]
+% x(13): omegaY 機体座標系の角速度[rad/s]
+% x(14): omegaZ 機体座標系の角速度[rad/s]
+% u(1): Ft 推力[N]
+% u(2): deltaY ヨージンバル角[rad]
+% u(3): deltaP ピッチジンバル角[rad]
+% u(4): Tr ロール制御トルク[N*m]
+% u(5): VWHx 水平座標系における風ベクトル[m/s]
+% u(6): VWHy 水平座標系における風ベクトル[m/s]
+% u(7): VWHz 水平座標系における風ベクトル[m/s]
 % ----
 
-global ROCKET
-global VWH
-
-% ROCKET�\���̂���ϐ��ǂݎ��
+% 機体パラメータ読み込み
+ROCKET = params_rocket();
 Isp = ROCKET.Isp;
 g0 = ROCKET.g0;
-FT = ROCKET.FT;
-Tend = ROCKET.Tend;
 CLa = ROCKET.CLa;
 Area = ROCKET.Area;
 length_GCM = ROCKET.length_GCM;
@@ -41,43 +45,42 @@ length_A = ROCKET.length_A;
 IXX = ROCKET.Ijj(1);
 IYY = ROCKET.Ijj(2);
 IZZ = ROCKET.Ijj(3);
-IXXdot = ROCKET.IXXdot;
-IYYdot = ROCKET.IYYdot;
-IZZdot = ROCKET.IZZdot;
 
-% ---- ���� ----
-% �W���o���p�x delta_Y, delta_P[rad]
-deltaY = 0;
-deltaP = 0;
+IXXdot = 0;
+IYYdot = 0;
+IZZdot = 0;
 
-% ��C�� P[Pa] ��C���x rho[kg/m3]
+% ---- 推力 ----
+% 大気圧 P[Pa] 大気密度 rho[kg/m3]
 % P = 101325;
 % rho = 1.2;
 [~, a, P, rho] = atmosphere_Rocket(x(2));
 
-% ��i���� FT[N] ���̎����ɂ����鐄�� Ft[N]
-% ���i�܂̎��ʗ��� delta_m[kg/s]
-Ft = thrust(t, [Tend], [FT]); 
+% 推進剤の質量流量 delta_m[kg/s]
+Ft = u(1);
 delta_m = -Ft / Isp / g0;
 
-% �W���o���p���l�������@�̍��W�n�ɂ����鐄�� FTB[N]
+% ジンバル角度 delta_Y, delta_P[rad]
+deltaY = u(2);
+deltaP = u(3);
+% ジンバル角を考慮した機体座標系における推力 FTB[N]
 FTB = Ft * [cos(deltaY)*cos(deltaP); -sin(deltaY); -cos(deltaY)*sin(deltaP)];
 
-% ---- ��C�� ----
-% �������W�n�ɂ����镗�x�N�g��VWH[m/s]�i���x�����̕��z�͖������̂Ƃ���j
-% �������W�n�ɂ�����@�̂̑΋C���x�x�N�g��VA[m/s]
-VWH = [0; 0; 0];
-VA = [x(5); x(6); x(7)] - VWH; % �΋C���x
+% ---- 空気力 ----
+% 水平座標系における風ベクトルVWH[m/s]（高度方向の分布は無いものとする）
+% 水平座標系における機体の対気速度ベクトルVA[m/s]
+VWH = u(5:7);
+VA = x(5:7) - VWH; % 対気速度
 
-% �@�̍��W�n���琅�����W�n�ւ̍��W�ϊ���\���N�H�[�^�j�I�� quat (quat_B2H)
-quat = [x(8) x(9) x(10) x(11)]; % q_B2H
+% 機体座標系から水平座標系への座標変換を表すクォータニオン quat (quat_B2H)
+quat = x(8:11); % q_B2H
 
-% �@�̍��W�n����݂����x�x�N�g��VAB�����߂đ��x���W�n�̒�`����
-% �@�̍��W�n����݂����x���W�n�̊��x�N�g��[xAB yAB zAB]�����Ƃ߂�
-% ���x���W�n����@�̍��W�n�ւ̕����]���s��DCM_A2B�����߂Ă���B
-% �@�̍��W�n�ɂ������C�� FAB[N]
+% 機体座標系からみた速度ベクトルVABを求めて速度座標系の定義から
+% 機体座標系からみた速度座標系の基底ベクトル[xAB yAB zAB]をもとめて
+% 速度座標系から機体座標系への方向余弦行列DCM_A2Bを求めている。
+% 機体座標系における空気力 FAB[N]
 if norm(VA) == 0.0
-  xAB = [1; 0; 0]; % �@�̍��W�n���x�����P�ʃx�N�g��
+  xAB = [1; 0; 0]; % 機体座標系速度方向単位ベクトル
   VAB = [0; 0; 0];
 else
   qVAB = quatmultiply(quat, quatmultiply([0 VA'], quatinv(quat)));
@@ -94,38 +97,39 @@ end
 theta = asin(sintheta);
 zAB = cross(xAB, yAB);
 
-% ���x���W�n����݂���C�� FAA[N]
+% 速度座標系からみた空気力 FAA[N]
 CD = cd_Rocket(norm(VAB) / a);
 FAA = -0.5*rho*norm(VA)^2*Area*[CD; 0; CLa * theta];
-% FAA = -0.5*rho*norm(VA)^2*area*[CD; 0; CLa * theta];
 
 DCM_A2B = [xAB yAB zAB];
 FAB = DCM_A2B * FAA;
 
-% ---- �d�� ----
-% �������W�n�ɂ�����@�̂ɂ�����d�� FHG[N]
+% ---- 重力 ----
+% 水平座標系における機体にかかる重力 FHG[N]
 [gc, gnorth] = gravity(x(2), 35*pi/180);
 FGH = x(1) * [gc; 0; gnorth];
 
-% ---- ���[�����g ----
-% ���͂ɂ�郂�[�����g MT[Nm]
-% ��C�͂ɂ�郂�[�����g MA[Nm]
+% ---- モーメント ----
+% 推力によるモーメント MT[Nm]
+% 空気力によるモーメント MA[Nm]
 MT = -cross(FTB, length_GCM);
 MA = -cross(FAB, length_A);
-M = MT + MA;
+M = MT + MA + [u(4); 0; 0];
 
-% ---- ���x�^�������� ----
+% ---- 速度運動方程式 ----
 qFTAH = quatmultiply(quatinv(quat),quatmultiply([0 (FTB+FAB)'], quat));
 FTAH = qFTAH(2:4)';
 delta_V = 1/x(1)*(FTAH + FGH);
 
-% ---- �p���̉^��������----
-delta_quat = -0.5 * quatmultiply([0 x(12) x(13) x(14)], [x(8) x(9) x(10) x(11)]);
+% ---- 姿勢の運動方程式----
+%delta_quat = -0.5 * quatmultiply([0 x(12:14)'], quat);
+delta_quat = deltaquat(quat', x(12:14));
 
-% ---- �p���x�̉^��������----
+% ---- 角速度の運動方程式----
+delta_omega = zeros(3,1);
 delta_omega(1) = 1/IXX * (M(1) - IXXdot * x(12) - (IZZ - IYY) * x(13) * x(14));
 delta_omega(2) = 1/IYY * (M(2) - IYYdot * x(13) - (IXX - IZZ) * x(14) * x(12));
-delta_omega(3) = 1/IXX * (M(3) - IZZdot * x(14) - (IYY - IXX) * x(12) * x(13));
+delta_omega(3) = 1/IZZ * (M(3) - IZZdot * x(14) - (IYY - IXX) * x(12) * x(13));
 
 dx = [ delta_m;
 x(5);
