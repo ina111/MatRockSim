@@ -1,25 +1,25 @@
 % -----
-% ロケットのパラメータ構造体を与える関数
+% ���P�b�g�̃p�����[�^�\���̂�^����֐�
 % -----
 function params = params_rocket()
-% m0: 初期質量[kg]
-% Isp: 比推力[sec]
-% g0: 地上での重力加速度[m/s2]
-% FT: 推力[N]
-% Tend: 燃焼時間[sec]
-% At: スロート径[m2]
-% Area: 機体の断面積[m2]
-% CLa: 揚力傾斜[/rad]
-% CD: 抗力係数[-]
-% length_GCM: エンジンピボット点からの重心位置ベクトル[m](3x1)
-% length_A: エンジンピボット点からの空力中心点位置ベクトル[m] (3x1)
-% IXX,IYY,IZZ: 慣性モーメント[kgm2]
-% IXXdot,IYYdot,IZZdot: 慣性モーメントの時間変化[kgm2/sec]
-% azimth, elevation: 初期姿勢の方位角、仰角[deg]
-% VWH:　水平座標系においての風速(Up-East-North) [m/s] (3x1)
-% pos0: 射点中心慣性座標系における位置（Up-East-North)[m] (3x1)
-% vel0: 射点中心慣性座標系における速度[m/s] (3x1)
-% omega0: 機体座標系における機体に働く角速度[rad/s] (3x1)
+% m0: ��������[kg]
+% Isp: �䐄��[sec]
+% g0: �n��ł̏d�͉����x[m/s2]
+% FT: ����[N]
+% Tend: �R�Ď���[sec]
+% At: �X���[�g�a[m2]
+% Area: �@�̂̒f�ʐ�[m2]
+% CLa: �g�͌X��[/rad]
+% CD: �R�͌W��[-]
+% length_GCM: �G���W���s�{�b�g�_����̏d�S�ʒu�x�N�g��[m](3x1)
+% length_A: �G���W���s�{�b�g�_����̋�͒��S�_�ʒu�x�N�g��[m] (3x1)
+% IXX,IYY,IZZ: �������[�����g[kgm2]
+% IXXdot,IYYdot,IZZdot: �������[�����g�̎��ԕω�[kgm2/sec]
+% azimth, elevation: �����p���̕��ʊp�A�p[deg]
+% VWH:�@�������W�n�ɂ����Ă̕���(Up-East-North) [m/s] (3x1)
+% pos0: �˓_���S�������W�n�ɂ�����ʒu�iUp-East-North)[m] (3x1)
+% vel0: �˓_���S�������W�n�ɂ����鑬�x[m/s] (3x1)
+% omega0: �@�̍��W�n�ɂ�����@�̂ɓ����p���x[rad/s] (3x1)
 params = struct( ...
 'm0', 70, ...
 'Isp', 1e+9, ... % 'Isp', 200, ...

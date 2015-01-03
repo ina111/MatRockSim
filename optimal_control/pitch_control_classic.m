@@ -1,17 +1,17 @@
 clear all
 close all
 % ----Constant----
-% g: é‡åŠ›åŠ é€Ÿåº¦(m/s2)
-% mass: é‡é‡(kg)
-% force_t: æ¨åŠ›(N)
+% g: d—Í‰Á‘¬“x(m/s2)
+% mass: d—Ê(kg)
+% force_t: „—Í(N)
 % L_alpha:
-% length_A: ç©ºåŠ›ä¸­å¿ƒã¾ã§ã®è·é›¢(m)
-% length_T: ã‚¸ãƒ³ãƒãƒ«ç‚¹ã¾ã§ã®è·é›¢(m)
-% theta0: ç›®æ¨™è§’(å‚ç›´æ–¹å‘ã‹ã‚‰ã®è§’åº¦)(deg)
-% vel_A: æ©Ÿè»¸æ–¹å‘é€Ÿåº¦(m/s)
-% Iyy: ãƒ”ãƒƒãƒé¢æ–¹å‘ã®æ…£æ€§ãƒ¢ãƒ¼ãƒ¡ãƒ³ãƒˆ(kg*ï½ï¼’)
-% muA: ç©ºåŠ›é …
-% muT: æ¨åŠ›é …
+% length_A: ‹ó—Í’†S‚Ü‚Å‚Ì‹——£(m)
+% length_T: ƒWƒ“ƒoƒ‹“_‚Ü‚Å‚Ì‹——£(m)
+% theta0: –Ú•WŠp(‚’¼•ûŒü‚©‚ç‚ÌŠp“x)(deg)
+% vel_A: ‹@²•ûŒü‘¬“x(m/s)
+% Iyy: ƒsƒbƒ`–Ê•ûŒü‚ÌŠµ«ƒ‚[ƒƒ“ƒg(kg*‚‚Q)
+% muA: ‹ó—Í€
+% muT: „—Í€
 % ----------------
 g = 9.8066;
 mass = 70;
@@ -26,13 +26,13 @@ Iyy = 84;
 muA = L_alpha * length_A / Iyy;
 muT = force_T * length_T / Iyy;
 
-% ----ãƒ–ãƒ­ãƒƒã‚¯ç·šå›³----
-% åˆ¶å¾¡ãƒ—ãƒ©ãƒ³ãƒˆPä¼é”é–¢æ•°: sys_pitch
-% PIDã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©Kä¼é”é–¢æ•°: sys_control
-% Kp,Kd,Ki: Påˆ¶å¾¡ä¿‚æ•°ã€Dåˆ¶å¾¡ä¿‚æ•°ã€Iåˆ¶å¾¡ä¿‚æ•°
+% ----ƒuƒƒbƒNü}----
+% §Œäƒvƒ‰ƒ“ƒgP“`’BŠÖ”: sys_pitch
+% PIDƒRƒ“ƒgƒ[ƒ‰K“`’BŠÖ”: sys_control
+% Kp,Kd,Ki: P§ŒäŒW”AD§ŒäŒW”AI§ŒäŒW”
 % sys_control = (Kd*s^2 + Kp*s + Ki) / s
-% ä¸€å·¡ä¼é”é–¢æ•°L: sys_loop
-% é–‰ãƒ«ãƒ¼ãƒ—ä¼é”é–¢æ•°: sys
+% ˆê„“`’BŠÖ”L: sys_loop
+% •Âƒ‹[ƒv“`’BŠÖ”: sys
 %   u     +-----------+ y1  u2+---------+     y
 %  ------>|sys_control|------>|sys_pitch|------->
 %      |  +-----------+       +---------+  |
@@ -53,7 +53,7 @@ sys_control = tf([Kd Kp Ki],[1 0])
 sys_loop = series(sys_control, sys_pitch)
 sys = feedback(sys_loop,[1])
 
-% ----å›³ç¤º
+% ----}¦
 t = 0:0.01:10;
 figure()
 bode(sys_pitch,t)
@@ -75,7 +75,7 @@ u = linspace(0.1,0.1,length(t));
 lsim(sys,u,t)
 print ('PID_step_response.jpg')
 
-% ----å®‰å®šæ€§ç¢ºèª----
+% ----ˆÀ’è«Šm”F----
 figure()
 rlocus(sys)
 print ('PID_rlocus.jpg')
@@ -84,8 +84,8 @@ figure()
 nyquist(sys)
 print ('PID_nyquist.jpg')
 
-% % ----cf.PIDã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ã®æœ€é©åŒ–å•é¡Œ ----
-% % PID: K(s+a)^2/s ã¨ã™ã‚‹
+% % ----cf.PIDƒRƒ“ƒgƒ[ƒ‰‚ÌÅ“K‰»–â‘è ----
+% % PID: K(s+a)^2/s ‚Æ‚·‚é
 % % ---------------------------------
 % t = 0:0.01:8;
 % for K = 0:0.1:10;

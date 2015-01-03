@@ -1,16 +1,16 @@
 clear all
 % close all
 % ----Constant----
-% g: é‡åŠ›åŠ é€Ÿåº¦(m/s2)
-% mass: é‡é‡(kg)
-% force_t: æ¨åŠ›(N)
-% L_alpha: æšåŠ›å‚¾æ–œ(N/rad)
-% length_A: ç©ºåŠ›ä¸­å¿ƒã¾ã§ã®è·é›¢(m)
-% length_T: ã‚¸ãƒ³ãƒãƒ«ç‚¹ã¾ã§ã®è·é›¢(m)
-% theta0: ç›®æ¨™è§’(å‚ç›´æ–¹å‘ã‹ã‚‰ã®è§’åº¦)(deg)
-% vel_A: æ©Ÿè»¸æ–¹å‘é€Ÿåº¦(m/s)
-% Iyy: ãƒ”ãƒƒãƒé¢æ–¹å‘ã®æ…£æ€§ãƒ¢ãƒ¼ãƒ¡ãƒ³ãƒˆ(kg*ï½ï¼’)
-% tau_delta: ã‚¸ãƒ³ãƒãƒ«è§’ä¸€æ¬¡é…ã‚Œæ™‚å®šæ•°(s)
+% g: d—Í‰Á‘¬“x(m/s2)
+% mass: d—Ê(kg)
+% force_t: „—Í(N)
+% L_alpha: —g—ÍŒXÎ(N/rad)
+% length_A: ‹ó—Í’†S‚Ü‚Å‚Ì‹——£(m)
+% length_T: ƒWƒ“ƒoƒ‹“_‚Ü‚Å‚Ì‹——£(m)
+% theta0: –Ú•WŠp(‚’¼•ûŒü‚©‚ç‚ÌŠp“x)(deg)
+% vel_A: ‹@²•ûŒü‘¬“x(m/s)
+% Iyy: ƒsƒbƒ`–Ê•ûŒü‚ÌŠµ«ƒ‚[ƒƒ“ƒg(kg*‚‚Q)
+% tau_delta: ƒWƒ“ƒoƒ‹ŠpˆêŸ’x‚ê’è”(s)
 % -----
 % 
 % ----------------
@@ -31,15 +31,15 @@ Iyy = 84;
 % Q_kalman = diag([1 1 1 1]);
 % R_kalman = diag([1 1 1 1]);
 
-% ----çŠ¶æ…‹æ–¹ç¨‹å¼----
-%ã€€sys: çŠ¶æ…‹æ–¹ç¨‹å¼
-% x = [z_dot; Î¸; Î¸_dot], u = delta_i, y = [z_dot_dot Î¸_dot]
-% z_dot: æ©Ÿè»¸å‚ç›´æ–¹å‘é€Ÿåº¦
-% Î¸: ç›®æ¨™è§’ã¨ã®ã‚ºãƒ¬
-% delta: ã‚¸ãƒ³ãƒãƒ«è§’
-% delta_i: ã‚¸ãƒ³ãƒãƒ«è§’å…¥åŠ›å€¤
+% ----ó‘Ô•û’ö®----
+%@sys: ó‘Ô•û’ö®
+% x = [z_dot; ƒÆ; ƒÆ_dot], u = delta_i, y = [z_dot_dot ƒÆ_dot]
+% z_dot: ‹@²‚’¼•ûŒü‘¬“x
+% ƒÆ: –Ú•WŠp‚Æ‚ÌƒYƒŒ
+% delta: ƒWƒ“ƒoƒ‹Šp
+% delta_i: ƒWƒ“ƒoƒ‹Šp“ü—Í’l
 % ---
-% sys_servo: æ‹¡å¤§ç³»
+% sys_servo: Šg‘åŒn
 % ----------------
 A_reg = [-L_alpha/mass/vel_A g*cosd(theta0) -vel_A;
 	 0 0 1;
@@ -61,15 +61,15 @@ D_servo = D_reg;
 sys_servo = ss(A_servo, B_servo, C_servo, D_servo);
 sys_servo_observe = ss(A_servo, B_servo, C_servo_observe, [0]);
 
-% ---- å¯åˆ¶å¾¡æ€§ç¢ºèª ----
-% å¯åˆ¶å¾¡æ€§ã§ã¯ãªãã€å¯å®‰å®šæ€§ã®è­°è«–ãŒå¿…è¦
+% ---- ‰Â§Œä«Šm”F ----
+% ‰Â§Œä«‚Å‚Í‚È‚­A‰ÂˆÀ’è«‚Ì‹c˜_‚ª•K—v
 Co_servo = ctrb(sys_servo);
 if length(A_servo) - rank(Co_servo) == 0
 	disp('Controllable')
 else
 	disp('Uncontrollable')
 end
-% ---- å¯è¦³æ¸¬æ€§ç¢ºèª ----
+% ---- ‰ÂŠÏ‘ª«Šm”F ----
 Ob_servo = obsv(sys_servo);
 if length(A_servo) - rank(Ob_servo) == 0
 	disp('Observable')
@@ -78,12 +78,12 @@ else
 end
 
 
-% % ---- æ¥µé…ç½®æ³• ----
+% % ---- ‹É”z’u–@ ----
 % J = [-1];
 % K = place(A,B,J);
 % sys_control = ss(A-B*K, eye(size(A)), eye(size(A)), eye(size(A)));
 
-% % ----æœ€é©ãƒ¬ã‚®ãƒ¥ãƒ¬ãƒ¼ã‚¿ ----
+% % ----Å“KƒŒƒMƒ…ƒŒ[ƒ^ ----
 Q_optreg = [0 0 0 0;
 	 0 1000 0 0;
 	 0 0 0 0;
@@ -94,7 +94,7 @@ N_optreg = [0; 0; 0; 0];
 sys_optreg = ss(A_servo-B_servo*K_optreg, B_servo, C_servo-D_servo*K_optreg, D_servo);
 
 
-% ---- æœ€é©ã‚µãƒ¼ãƒœã‚·ã‚¹ãƒ†ãƒ  ----
+% ---- Å“KƒT[ƒ{ƒVƒXƒeƒ€ ----
 % Q11 = [100];
 % Q22 = [500];
 % Q_optservo = [ C_reg'*Q11*C_reg zeros(length(A_reg),1);
@@ -116,22 +116,22 @@ sys_optreg = ss(A_servo-B_servo*K_optreg, B_servo, C_servo-D_servo*K_optreg, D_s
 % 
 % y_ref = 0;
 % x_0 = [0; 0.2; 0; 0];
-% % ãƒ—ãƒ©ã‚¹ã‹ã‚‰ãƒã‚¤ãƒŠã‚¹ã«ã—ã¦ã¿ãŸ
+% % ƒvƒ‰ƒX‚©‚çƒ}ƒCƒiƒX‚É‚µ‚Ä‚İ‚½
 % K_optservo = [K G] + Fa * y_ref + Fb * x_0;
 % sys_optservo = ss(A_servo - B_servo*K_optservo, eye(5), eye(5), eye(5));
 
-%% ---- 2è‡ªç”±åº¦ç©åˆ†å½¢æœ€é©ã‚µãƒ¼ãƒœã‚·ã‚¹ãƒ†ãƒ  ----
+%% ---- 2©—R“xÏ•ªŒ`Å“KƒT[ƒ{ƒVƒXƒeƒ€ ----
 %[F0 S Er] = lqr(sys_reg, Q_lqr, R_lqr);
 %H0 = - inv(C_reg * inv(A_reg - B_reg * F0) * B_reg);
 %F1 = C_reg * inv(A_reg - B_reg * F0);
 %F2 = - R_lqr * B_reg' * F1';
 
-% ---- ã‚«ãƒ«ãƒãƒ³ãƒ•ã‚£ãƒ«ã‚¿ ----
+% ---- ƒJƒ‹ƒ}ƒ“ƒtƒBƒ‹ƒ^ ----
 % [L_kalman P E] = lqe(A_reg, [], C_reg_observe, Q_kalman, R_kalman);
 
 
-% ---- 2è‡ªç”±åº¦ç©åˆ†å½¢æœ€é©ã‚µãƒ¼ãƒœã‚·ã‚¹ãƒ†ãƒ  ----
-% ---- ç©åˆ†å™¨ã‚’é™¤ã„ãŸï¼ˆæ‹¡å¤§ç³»ã®å‰æ®µéšï¼‰ã‚·ã‚¹ãƒ†ãƒ ã§LQRã—ã¦ã€ç©åˆ†å™¨åˆ†ã®Wé …ã‚’å…¥ã‚Œã‚‹
+% ---- 2©—R“xÏ•ªŒ`Å“KƒT[ƒ{ƒVƒXƒeƒ€ ----
+% ---- Ï•ªŠí‚ğœ‚¢‚½iŠg‘åŒn‚Ì‘O’iŠKjƒVƒXƒeƒ€‚ÅLQR‚µ‚ÄAÏ•ªŠí•ª‚ÌW€‚ğ“ü‚ê‚é
 % servo_2dof_A11 = A_reg - B_reg * F0 + B_reg * F1*F2*W;
 % servo_2dof_A12 = B_reg * F2 * W;
 % A_2dof = [servo_2dof_A11 servo_2dof_A12;
@@ -171,7 +171,7 @@ sys_optreg = ss(A_servo-B_servo*K_optreg, B_servo, C_servo-D_servo*K_optreg, D_s
 % print ('Modern_state.jpg')
 
 
-% ----å›³ç¤º
+% ----}¦
 x_0 = [0; 0.2; 0];
 t = 0:0.01:10;
 [y0,t,x0] = initial(sys_optreg, [x_0; 0], t);
