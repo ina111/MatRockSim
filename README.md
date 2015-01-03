@@ -2,22 +2,21 @@
 
 Matlab Rocket Flight Simulator
 
-6自由度のロケットフライトシミュレーター。水平座標系での飛翔をシミュレーション。
+6���R�x�̃��P�b�g�t���C�g�V�~�����[�^�[�B�������W�n�ł̔��Ă��V�~�����[�V�����B
 
-## 実行
-Matlab/OctaveでMatRockSimフォルダ内で下記コマンドで実行。
+## ���s
+Matlab/Octave��MatRockSim�t�H���_���ŉ��L�R�}���h�Ŏ��s�B
 
     MatRockSim
 
 
-## パラメータ設定
-- params.mファイルの中身を変更
-- aerodynamics/cd_Rocket.mファイルを変更することによって抗力係数の変更
+## �p�����[�^�ݒ�
+- params.m�t�@�C���̒��g��ύX
+- aerodynamics/cd_Rocket.m�t�@�C����ύX���邱�Ƃɂ���čR�͌W���̕ύX
 
 ## Future Works
-- 推力データの読み込み
-- 慣性モーメントの時間変化。（推力とXdotなどの連携）
-- 圧力中心の遷移(Barrowman method??, マッハ数依存の空力モーメント係数 ??)
-- 上空の風の変化に対応
-- ランチャー離脱時のチップオフ
-- 航法誘導、姿勢制御、シーケンス制御
+- �������[�����g�̎��ԕω��B�i���͂�Xdot�Ȃǂ̘A�g�j
+- ���͒��S�̑J��(Barrowman method??, �}�b�n���ˑ��̋�̓��[�����g�W�� ??)
+- ���̕��̕ω��ɑΉ�
+- �����`���[���E���̃`�b�v�I�t
+- �q�@�U���A�p������A�V�[�P���X����

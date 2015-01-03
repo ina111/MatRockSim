@@ -3,31 +3,31 @@
 % ----
 
 function [ dx ] = parachute_dynamics( t, x )
-% x(1): mass è³ªé‡[kg]
-% x(2): X_H å°„ç‚¹åº§æ¨™ä½ç½®[m]
-% x(3): Y_H å°„ç‚¹åº§æ¨™ä½ç½®[m]
-% x(4): Z_H å°„ç‚¹åº§æ¨™ä½ç½®[m]
-% x(5): VX_H å°„ç‚¹åº§æ¨™å¯¾åœ°é€Ÿåº¦[m/s]
-% x(6): VY_H å°„ç‚¹åº§æ¨™å¯¾åœ°é€Ÿåº¦[m/s]
-% x(7): VZ_H å°„ç‚¹åº§æ¨™å¯¾åœ°é€Ÿåº¦[m/s]
+% x(1): mass Ž¿—Ê[kg]
+% x(2): X_H ŽË“_À•WˆÊ’u[m]
+% x(3): Y_H ŽË“_À•WˆÊ’u[m]
+% x(4): Z_H ŽË“_À•WˆÊ’u[m]
+% x(5): VX_H ŽË“_À•W‘Î’n‘¬“x[m/s]
+% x(6): VY_H ŽË“_À•W‘Î’n‘¬“x[m/s]
+% x(7): VZ_H ŽË“_À•W‘Î’n‘¬“x[m/s]
 % x(8): q0 quaternion Body to Horizon[-]
 % x(9): q1 quaternion Body to Horizon[-]
 % x(10): q2 quaternion Body to Horizon[-]
 % x(11): q3 quaternion Body to Horizon[-]
-% x(12): omegaX æ©Ÿä½“åº§æ¨™ç³»ã®è§’é€Ÿåº¦[rad/s]
-% x(13): omegaY æ©Ÿä½“åº§æ¨™ç³»ã®è§’é€Ÿåº¦[rad/s]
-% x(14): omegaZ æ©Ÿä½“åº§æ¨™ç³»ã®è§’é€Ÿåº¦[rad/s]
+% x(12): omegaX ‹@‘ÌÀ•WŒn‚ÌŠp‘¬“x[rad/s]
+% x(13): omegaY ‹@‘ÌÀ•WŒn‚ÌŠp‘¬“x[rad/s]
+% x(14): omegaZ ‹@‘ÌÀ•WŒn‚ÌŠp‘¬“x[rad/s]
 % ----
 
-% ãƒ‘ãƒ©ã‚·ãƒ¥ãƒ¼ãƒˆç›´å¾„ã€é¢ç©ã€æŠ—åŠ›ä¿‚æ•°
+% ƒpƒ‰ƒVƒ…[ƒg’¼ŒaA–ÊÏAR—ÍŒW”
 global VWH
 global para_Cd para_S
 
-% ç©ºæ°—å¯†åº¦ã€é‡åŠ›åŠ é€Ÿåº¦
+% ‹ó‹C–§“xAd—Í‰Á‘¬“x
 [~, a, P, rho] = atmosphere_Rocket(x(2));
 [gc, gnorth] = gravity(x(2), 35*pi/180);
 
-% é€Ÿåº¦ã®é‹å‹•æ–¹ç¨‹å¼
+% ‘¬“x‚Ì‰^“®•û’öŽ®
 if x(5) > 0
 	delta_V = gc - 0.5 / x(1) * rho * para_Cd * para_S * x(5) * x(5);
 else

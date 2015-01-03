@@ -1,2 +1,4 @@
 output/
-
+slprj/
+Thumbs.db
+*.mexw64
