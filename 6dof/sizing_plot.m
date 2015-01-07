@@ -10,8 +10,8 @@ ROCKET.Isp =Isp;
 ROCKET.Area = diameter^2 /4 * pi;
 
 params_6dof
-div = 4;
-weight_dry = linspace(50,180,div);
+div = 20;
+weight_dry = linspace(50,190,div);
 weight_prop = zeros(1,length(weight_dry));
 weight_all = zeros(1,length(weight_dry));
 massratio = zeros(1,length(weight_dry));
