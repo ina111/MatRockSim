@@ -3,34 +3,10 @@ global ROCKET
 global VWH
 global para_Cd para_S
 
-% ---- パラメータ設定 ----
-% m0: 初期質量[kg]
-% Isp: 比推力[sec]
-% g0: 地上での重力加速度[m/s2]
-% FT: 推力[N]
-% Tend: 燃焼時間[sec]
-% At: スロート径[m2]
-% Area: 機体の断面積[m2]
-% CLa: 揚力傾斜[/rad]
-% CD: 抗力係数[-]
-% length_GCM: エンジンピボット点からの重心位置ベクトル[m](3x1)
-% length_A: エンジンピボット点からの空力中心点位置ベクトル[m] (3x1)
-% IXX,IYY,IZZ: 慣性モーメント[kgm2]
-% IXXdot,IYYdot,IZZdot: 慣性モーメントの時間変化[kgm2/sec]
-% azimth, elevation: 初期姿勢の方位角、仰角[deg]
-% VWH:　水平座標系においての風速(Up-East-North) [m/s] (3x1)
-ROCKET = struct( ...
-'m0', 300.0, ...
-'Isp', 200, ...
-'g0', 9.80665, ...
-'FT', [7500], ...
-'Tend', [4], ...
-'At', 0.01, ...
-'Area', 0.090, ...
-'CLa', 3.5, ...
-'azimth', 45, ...
-'elevation', 88 ...
-);
+% params_ROCKETinit_6dof
+
+% ---- 重量計算 ----
+ROCKET.m0 = ROCKET.mf + ROCKET.FT * ROCKET.Tend / ROCKET.Isp / ROCKET.g0;
 
 VWH = [0; 0; 0];
 
@@ -54,7 +30,7 @@ pos0 = [0.0; 0.0; 0.0]; % m
 vel0 = [0.0; 0.0; 0.0]; % m/s
 quat0 = attitude(ROCKET.azimth, ROCKET.elevation);
 omega0 = [0.0; 0.0; 0.0]; % rad/s
-x0 = [ROCKET.m0; pos0; vel0];
+x0 = [ROCKET.m0; pos0; vel0; quat0; omega0];
 
 
 % ---- mappingのための変数 ----

@@ -1,0 +1,18 @@
+function f = massratio ( mf )
+    global ROCKET
+    params_6dof
+    ROCKET.mf = mf;
+    burn_start = 30;
+    burn_end = 200;
+    while state == 1
+        try
+        burn_time = fzero(@fsolve_altitude, [burn_start,burn_end]);
+        catch
+            
+    end
+    % ---- èdó åvéZ ----
+    ROCKET.m0 = ROCKET.mf + ROCKET.FT * burn_time / ROCKET.Isp / ROCKET.g0;
+    
+    massratio = ROCKET.mf / ROCKET.m0
+    f = massratio;
+end

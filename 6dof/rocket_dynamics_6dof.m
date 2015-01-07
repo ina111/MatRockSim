@@ -9,7 +9,7 @@
 % 
 % …•½À•WŒn‚ÌŽæ‚è•û‚Íxyz‚Ì‡”Ô‚ÉUp-East-North
 % ----
-function [ dx ] = rocket_dynamics( t, x )
+function [ dx ] = rocket_dynamics_6dof( t, x )
 % x(1): mass Ž¿—Ê[kg]
 % x(2): X_H ŽË“_À•WˆÊ’u[m]
 % x(3): Y_H ŽË“_À•WˆÊ’u[m]
@@ -121,12 +121,20 @@ FTAH = qFTAH(2:4)';
 delta_V = 1/x(1)*(FTAH + FGH);
 
 % ---- Žp¨‚Ì‰^“®•û’öŽ®----
-delta_quat = -0.5 * quatmultiply([0 x(12) x(13) x(14)], [x(8) x(9) x(10) x(11)]);
+if t > Tend
+    delta_quat = -0.5 * quatmultiply([0 x(12) x(13) x(14)], [x(8) x(9) x(10) x(11)]);
+else
+    delta_quat = target_angles(t) - [x(8) x(9) x(10) x(11)];
+end
 
 % ---- Šp‘¬“x‚Ì‰^“®•û’öŽ®----
-delta_omega(1) = 1/IXX * (M(1) - IXXdot * x(12) - (IZZ - IYY) * x(13) * x(14));
-delta_omega(2) = 1/IYY * (M(2) - IYYdot * x(13) - (IXX - IZZ) * x(14) * x(12));
-delta_omega(3) = 1/IXX * (M(3) - IZZdot * x(14) - (IYY - IXX) * x(12) * x(13));
+if t > Tend
+    delta_omega(1) = 1/IXX * (M(1) - IXXdot * x(12) - (IZZ - IYY) * x(13) * x(14));
+    delta_omega(2) = 1/IYY * (M(2) - IYYdot * x(13) - (IXX - IZZ) * x(14) * x(12));
+    delta_omega(3) = 1/IXX * (M(3) - IZZdot * x(14) - (IYY - IXX) * x(12) * x(13));
+else
+    delta_omega = [0 0 0];
+end
 
 dx = [ delta_m;
 x(5);

@@ -19,18 +19,20 @@ addpath ../environment
 addpath ../aerodynamics
 addpath ../mapping
 addpath ../gpssim
-addpath ../3dof
 addpath ..
 
 % ---- パラメータ設定読み込み ----
 % params_test
-params_3dof
+params_ROCKETinit_6dof
+params_6dof
 % params_M3S
-ROCKET.Tend = 60;
+
 % ---- 常微分方程式 ----
 AbsTol = [1e-4; % m
           1e-4; 1e-4; 1e-4; % pos
-          1e-4; 1e-4; 1e-4]; % vel
+          1e-4; 1e-4; 1e-4; % vel
+          1e-4; 1e-4; 1e-4; 1e-4; %quat
+          1e-3; 1e-3; 1e-3]; % omega
 options = odeset('Events', @events_land, 'RelTol', 1e-3, 'AbsTol', AbsTol);
 
 time_end = 400;
@@ -43,16 +45,16 @@ disp('Start Simulation...');
 % パラシュートの有無でシミュレーションの場合分け
 % if para_exist == true
 %   tic
-%   [T_rocket, X_rocket] = ode23s(@rocket_dynamics_3dof, [0 time_parachute], x0, options);
+%   [T_rocket, X_rocket] = ode23s(@rocket_dynamics, [0 time_parachute], x0, options);
 %   toc;tic
-%   [T_parachute, X_parachute] = ode23s(@parachute_dynamics_3dof, [time_parachute time_end], X_rocket(length(X_rocket),:), options);
+%   [T_parachute, X_parachute] = ode23s(@parachute_dynamics, [time_parachute time_end], X_rocket(length(X_rocket),:), options);
 %   toc
 %   T = [T_rocket; T_parachute];
 %   X = [X_rocket; X_parachute];
 % else
   % パラボリックフライト
   tic
-  [T, X] = ode23s(@rocket_dynamics_3dof, [0 time_end], x0, options);
+  [T, X] = ode23s(@rocket_dynamics_6dof, [0 time_end], x0, options);
   toc
 % end
 
@@ -67,10 +69,10 @@ ylabel('Weight [kg]')
 grid on
 
 figure()
-plot(T,X(:,2),'-',T,X(:,3),'-',T,X(:,4),'-')
+plot(T,X(:,2)/1000,'-',T,X(:,3)/1000,'-',T,X(:,4)/1000,'-')
 title('Position')
 xlabel('Time [s]')
-ylabel('Position [m]')
+ylabel('Position [km]')
 legend('Altitude','East','North')
 grid on
 
@@ -80,6 +82,22 @@ title('Velocity')
 xlabel('Time [s]')
 ylabel('Velocity [m/s]')
 legend('Altitude','East','North')
+grid on
+
+figure()
+plot(T,X(:,8),'-',T,X(:,9),'-',T,X(:,10),'-',T,X(:,11),'-')
+title('Attitude')
+xlabel('Time [s]')
+ylabel('Quaternion [-]')
+legend('q0','q1','q2','q3')
+grid on
+
+figure()
+plot(T,X(:,12),'-',T,X(:,13),'-',T,X(:,14),'-')
+title('Angler Velocity')
+xlabel('Time [s]')
+ylabel('Angler Velocity [rad/s]')
+legend('omega x','omega y','omega z')
 grid on
 
 % coordinate: Up-East-North
@@ -110,14 +128,14 @@ else
 end
 
 
-% ----
-% mapping, gpssim
-% ----
-% outputフォルダがなかったら作る
+% % ----
+% % mapping, gpssim
+% % ----
+% % outputフォルダがなかったら作る
 % if exist('output', 'dir') == 0
 %   mkdir output;
 % end
-
+% 
 % tic
 % disp('making KML and HTML files...');
 % pos2GPSdata(filename, T, X(:,2), X(:,3), X(:,4), xr, yr, zr, time_ref, day_ref )
