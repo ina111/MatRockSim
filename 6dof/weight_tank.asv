@@ -1,0 +1,26 @@
+function tank_weight = weight_tank( prop_weight, radius)
+% タンク重量を計算する。
+% @params prop_weight 推進剤重量(kg)
+% @params radius タンク半径（内径）(m)
+% @return tank_weight タンク重量(kg)
+    % パラメータ
+    of = 1.6; % O/F(-)
+    rho_f = 0.79; % 燃料密度(m3/kg)
+    rho_o = 1.1; % 酸化剤密度(m3/kg)
+    rho_Al = 2.78; % アルミ密度(m3/kg)
+    t_tank = 0.005; % タンク厚み(m)
+    
+    % 計算
+    % weight_ 重量
+    weight_f = prop_weight * (1 / (of+1));
+    weight_o = prop_weight * (of / (of+1));
+    % V_ 推進剤体積
+    V_f = weight_f * rho_f;
+    V_o = weight_o * rho_o;
+    % タンク体積
+    if 4/3*pi*radius^3 > V_f
+        h_f = 0; % タンクの直線部(m)
+    else
+        h_f = 
+    
+end
