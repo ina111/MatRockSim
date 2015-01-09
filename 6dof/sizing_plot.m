@@ -1,6 +1,6 @@
 % ドライ重量をパラメータにして、高度100kmを達成するためのロケットのサイジングを行う。
 % 
-function [dry, prop, all, ratio] = sizing_plot( Isp, diameter)
+function [dry, prop, all, ratio, burn] = sizing_plot( Isp, diameter)
 
 warning('off','all');
 global ROCKET
@@ -11,16 +11,19 @@ ROCKET.Area = diameter^2 /4 * pi;
 
 params_6dof
 div = 20;
-weight_dry = linspace(50,190,div);
+dry_start = 30;
+dry_end = 200;
+weight_dry = linspace(dry_start, dry_end, div);
 weight_prop = zeros(1,length(weight_dry));
 weight_all = zeros(1,length(weight_dry));
 massratio = zeros(1,length(weight_dry));
+burn_time_array = zeros(1,length(weight_dry));
 
 for i = 1:div
     ROCKET.mf = weight_dry(i);
     state = 1;
     burn_start = 40;
-    burn_end = 150;
+    burn_end = 170;
     option = optimset('TolX', 5e-3);
     burn_time = 0;
     while state == 1
@@ -40,6 +43,7 @@ for i = 1:div
     weight_prop(i) = ROCKET.m0 - ROCKET.mf;
     weight_all(i) = ROCKET.m0;
     massratio(i) = ROCKET.m0 / ROCKET.mf;
+    burn_time_array(i) = burn_time;
     disp('***********************')
     disp(['mf: ', num2str(weight_dry(i))])
     disp(['massraio: ', num2str(massratio(i))])
@@ -50,5 +54,5 @@ dry = weight_dry;
 prop = weight_prop;
 all = weight_all;
 ratio = massratio;
-
+burn = burn_time_array;
 end
