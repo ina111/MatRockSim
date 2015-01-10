@@ -1,15 +1,18 @@
 close all
 
+global ROCKET
+
 addpath ../quaternion
 addpath ../environment
 addpath ../aerodynamics
 addpath ../mapping
 addpath ../gpssim
 addpath ..
-
+tic;
 % Isp = 170:10:240;
 Isp = 170:10:240;
 div = 20;
+rocket_dia = 0.4;
 weight_dry = zeros(length(Isp), div);
 weight_prop = zeros(length(Isp), div);
 weight_all = zeros(length(Isp), div);
@@ -20,10 +23,10 @@ burn_time_array = zeros(length(Isp), div);
 for i = 1:length(Isp)
     [weight_dry(i,:), weight_prop(i,:), ...
         weight_all(i,:), massratio(i,:), ...
-        burn_time_array(i,:)] = sizing_plot(Isp(i), 0.4);
+        burn_time_array(i,:)] = sizing_plot(Isp(i), rocket_dia);
     
     for j = 1:div
-        weight_tank2(i,j) = weight_tank(weight_prop(i,j), 0.2);
+        weight_tank2(i,j) = weight_tank(weight_prop(i,j), rocket_dia / 2);
     end
     Isp_legend(i) = Isp(i);
 end
@@ -31,56 +34,80 @@ end
 % ------------
 %     plot 
 % ------------
+str_dia = num2str(rocket_dia*1000);
+str_thrust = num2str(ROCKET.FT);
+
+% ====
 Isp_legend = num2str(Isp');
 figure(1);
 plot(weight_dry', weight_all');
-title('Dry Weight vs Total Weight')
-xlabel('Dry Weight (kg)')
-ylabel('Total Weight (kg)')
+title('乾燥重量 vs 全備重量')
+xlabel('乾燥重量 (kg)')
+ylabel('全備重量 (kg)')
 ylim([0 inf]);
-legend(Isp_legend);
+legend(Isp_legend, 'Location', 'Best');
 grid on
+f1_name = strcat('外形', str_dia, 'mm 推力', str_thrust, 'Nの全備重量'); 
+f1_dir = strcat('output\', f1_name, '.png');
+print(f1_dir, '-dpng', '-r300');
 
 figure(2)
 plot(weight_dry', weight_prop');
-title('Dry Weight vs Propulsion Weight')
-xlabel('Dry Weight (kg)')
-ylabel('Propulsion Weight (kg)')
+title('乾燥重量 vs 推進剤重量')
+xlabel('乾燥重量 (kg)')
+ylabel('推進剤重量 (kg)')
 ylim([0 inf]);
-legend(Isp_legend);
+legend(Isp_legend, 'Location', 'Best');
 grid on
+f1_name = strcat('外形', str_dia, 'mm 推力', str_thrust, 'Nの推進剤重量'); 
+f1_dir = strcat('output\', f1_name, '.png');
+print(f1_dir, '-dpng', '-r300');
 
 figure(3)
 plot(weight_dry', massratio');
-title('Dry Weight vs Mass ratio')
-xlabel('Dry Weight (kg)')
-ylabel('Mass ratio (-)')
-legend(Isp_legend);
+title('乾燥重量 vs 質量比')
+xlabel('乾燥重量 (kg)')
+ylabel('質量比 (-)')
+legend(Isp_legend, 'Location', 'Best');
 ylim([1 inf]);
 grid on
+f1_name = strcat('外形', str_dia, 'mm 推力', str_thrust, 'Nの質量比'); 
+f1_dir = strcat('output\', f1_name, '.png');
+print(f1_dir, '-dpng', '-r300');
 
 figure(4);
 x = min(weight_dry(1,:)):max(weight_dry(1,:));
 plot(weight_dry', weight_tank2', x, x);
-title('Tank Weight, Dry Weight')
-xlabel('Dry Weight (kg)')
-ylabel('Weight (kg)')
+title('タンク重量 vs 乾燥重量')
+xlabel('乾燥重量 (kg)')
+ylabel('重量 (kg)')
 ylim([0 inf]);
-legend(Isp_legend);
+legend(Isp_legend, 'Location', 'Best');
 grid on
+f1_name = strcat('外形', str_dia, 'mm 推力', str_thrust, 'Nのタンク重量'); 
+f1_dir = strcat('output\', f1_name, '.png');
+print(f1_dir, '-dpng', '-r300');
 
 figure(5);
 plot(weight_dry', weight_all' - weight_tank2' - weight_prop');
-title('(Total Weight) - (Prop + Tank Weight)')
-xlabel('Dry Weight (kg)')
-ylabel('Weight (kg)')
-legend(Isp_legend);
+title('(全備重量) - (推進剤＋タンクの重量) = タンク・推進剤以外の重量余裕')
+xlabel('乾燥重量 (kg)')
+ylabel('重量 (kg)')
+legend(Isp_legend, 'Location', 'Best');
 grid on
+f1_name = strcat('外形', str_dia, 'mm 推力', str_thrust, 'Nの重量余裕'); 
+f1_dir = strcat('output\', f1_name, '.png');
+print(f1_dir, '-dpng', '-r300');
 
 figure(6);
 plot(weight_dry', burn_time_array');
-title('Dry Weight vs Burn time')
-xlabel('Dry Weight (kg)')
-ylabel('burn time (s)')
-legend(Isp_legend);
+title('乾燥重量 vs 燃焼時間')
+xlabel('乾燥重量 (kg)')
+ylabel('燃焼時間 (sec)')
+legend(Isp_legend, 'Location', 'Best');
 grid on
+f1_name = strcat('外形', str_dia, 'mm 推力', str_thrust, 'Nの燃焼時間'); 
+f1_dir = strcat('output\', f1_name, '.png');
+print(f1_dir, '-dpng', '-r300');
+
+toc;

@@ -2,3 +2,4 @@ output/
 slprj/
 Thumbs.db
 *.mexw64
+*.asv
